@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class VisualPanel extends JPanel {
 
-    private final  MainManager manager;
+    private final MainManager manager;
 
     public VisualPanel(MainManager manager, int x, int y) {
 

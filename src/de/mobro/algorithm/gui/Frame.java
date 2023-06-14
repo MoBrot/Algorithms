@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 public class Frame extends JFrame {
 
-    public Frame(int x, int y, MainManager manager, ActionListener actionListener) {
+    public Frame(int x, int y, MainManager manager) {
 
         this.setSize(x, y);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -20,7 +20,7 @@ public class Frame extends JFrame {
         this.setLocationRelativeTo(null);
 
         VisualPanel visualPanel = new VisualPanel(manager, x - 350, y);
-        SettingsPanel settingsPanel = new SettingsPanel(350, y, actionListener);
+        SettingsPanel settingsPanel = new SettingsPanel(350, y, manager);
 
         this.add(visualPanel);
         this.add(settingsPanel);

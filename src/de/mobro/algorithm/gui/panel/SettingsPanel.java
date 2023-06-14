@@ -1,22 +1,23 @@
 package de.mobro.algorithm.gui.panel;
 
+import de.mobro.algorithm.gui.algorithm.Algorithm;
+import de.mobro.algorithm.gui.algorithm.Bubblesort;
+import de.mobro.algorithm.gui.visualitiation.Bar;
+import de.mobro.algorithm.gui.visualitiation.MainManager;
+
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class SettingsPanel extends JPanel {
 
-    private final ActionListener actionListener;
+    private final MainManager manager;
 
-    private final int x;
-    private final int y;
+    private final Bubblesort bubbleSort = new Bubblesort();
 
-    public SettingsPanel(int x, int y, ActionListener actionListener) {
 
-        this.actionListener = actionListener;
-        this.x = x;
-        this.y = y;
+    public SettingsPanel(int x, int y, MainManager manager) {
+
+        this.manager = manager;
 
         this.setBackground(Color.WHITE);
 
@@ -28,8 +29,8 @@ public class SettingsPanel extends JPanel {
         ----------------------------------
          */
 
-        this.add(getStart());
-        this.add(getReset());
+        this.add(getStartButton());
+        this.add(getResetButton());
         this.add(getAmountSlider());
         this.add(getSpeedSlider());
         this.add(getComboBox());
@@ -46,34 +47,40 @@ public class SettingsPanel extends JPanel {
 
     }
 
-    public static JComboBox comboBox;
+    private JComboBox comboBox;
 
-    public static JSlider speed;
-    public static JSlider amount;
+    private final JSlider speedSlider =  new JSlider(1, 2000);
+    private final JSlider amountSlider = new JSlider(10, 512);;
 
-    public static JButton reset;
-    public static JButton start;
+    private final JButton resetButton = new JButton("Reset bars");;
+    private final JButton startButton = new JButton("Sort");
 
-    public static JLabel amountLabel;
-    public static JLabel speedLabel;
+    private final JLabel amountLabel = new JLabel();
+    private final JLabel speedLabel = new JLabel();
 
-    private JLabel split;
-    private JLabel headline;
+    private final JLabel split = new JLabel();
+    private final JLabel headline = new JLabel();
 
 
     public static JLabel counter;
 
+    public static Algorithm selectedAlgorithm;
+
     private JComboBox getComboBox() {
 
-        String[] algorithmTypes = {
-                "Bubblesort",
-                "Quicksort",
-                "ShellSort",
+        Algorithm[] algorithms = {
+
+                bubbleSort
 
         };
 
-        comboBox = new JComboBox(algorithmTypes);
-        comboBox.addActionListener(actionListener);
+        selectedAlgorithm = algorithms[0];
+
+        comboBox = new JComboBox(algorithms);
+
+        comboBox.addActionListener(e -> {
+            selectedAlgorithm = (Algorithm) comboBox.getSelectedItem();
+        });
 
         comboBox.setBounds(950, 345, 250, 40);
 
@@ -83,72 +90,88 @@ public class SettingsPanel extends JPanel {
 
     private JSlider getSpeedSlider(){
 
-        speed =  new JSlider(1, 2000);
+        speedSlider.setOrientation(JSlider.HORIZONTAL);
+        speedSlider.setValue(250);
 
-        speed.setOrientation(JSlider.HORIZONTAL);
-        speed.setValue(250);
+        speedSlider.setBounds(950, 250, 250, 40);
 
-        speed.setBounds(950, 250, 250, 40);
+        speedSlider.addChangeListener(e -> {
 
-        speed.addChangeListener((ChangeListener) actionListener);
+            if(e.getSource() == this.speedSlider)
+                this.speedLabel.setText("Delay: " + this.speedSlider.getValue() + "ms");
 
-        //speed.setBounds(x, y);
+        });
 
-        return speed;
-
+        return speedSlider;
     }
 
     private JSlider getAmountSlider() {
 
-        amount =  new JSlider(10, 512);
+        amountSlider.setOrientation(JSlider.HORIZONTAL);
+        amountSlider.setValue(20);
 
-        amount.setOrientation(JSlider.HORIZONTAL);
-        amount.setValue(20);
+        amountSlider.setBounds(950, 150, 250, 40);
+        amountSlider.setToolTipText("Bars: " + amountSlider.getValue());
 
-        amount.setBounds(950, 150, 250, 40);
-        amount.setToolTipText("Bars: " + amount.getValue());
+        amountSlider.setPaintTicks(true);
+        amountSlider.setMinorTickSpacing(20);
 
-        amount.setPaintTicks(true);
-        amount.setMinorTickSpacing(20);
+        amountSlider.setPaintTrack(true);
+        amountSlider.setMajorTickSpacing(100);
 
-        amount.setPaintTrack(true);
-        amount.setMajorTickSpacing(100);
+        amountSlider.setPaintLabels(true);
 
-        amount.setPaintLabels(true);
+        amountSlider.addChangeListener(e -> {
 
-        amount.addChangeListener((ChangeListener) actionListener);
+            if(e.getSource() == this.amountSlider)
+                amountLabel.setText("Bars: " + this.amountSlider.getValue());
 
-        return amount;
+        });
 
-    }
-
-    private JButton getStart(){
-
-        start = new JButton("Sort");
-
-        start.addActionListener(actionListener);
-        start.setBounds(950, 50, 75, 45);
-
-        return start;
+        return amountSlider;
 
     }
 
-    private JButton getReset() {
+    private JButton getStartButton() {
 
-        reset = new JButton("Reset bars");
+        startButton.addActionListener(e -> {
 
-        reset.addActionListener(actionListener);
-        reset.setBounds(1050, 50, 100, 45);
+            // Toggle sort / stop sorting
+            if(startButton.getText().equalsIgnoreCase("sort")) {
 
-        return reset;
+                manager.sort();
+                startButton.setText("Stop");
+
+            } else {
+                startButton.setText("Sort");
+                manager.stopSorting();
+            }
+        });
+
+        startButton.setBounds(950, 50, 75, 45);
+
+        return startButton;
+
+    }
+
+    private JButton getResetButton() {
+
+        resetButton.addActionListener(e -> {
+
+            manager.stopSorting();
+
+
+
+        });
+        resetButton.setBounds(1050, 50, 100, 45);
+
+        return resetButton;
 
     }
 
     private JLabel getSpeedLabel(){
 
-        speedLabel = new JLabel();
-
-        speedLabel.setText("Delay: " + speed.getValue() + "ms");
+        speedLabel.setText("Delay: " + speedSlider.getValue() + "ms");
         speedLabel.setBounds(1025, 220, 1000, 30);
 
         speedLabel.setFont(new Font("", Font.PLAIN, 20));
@@ -159,9 +182,7 @@ public class SettingsPanel extends JPanel {
 
     private JLabel getAmountLabel(){
 
-        amountLabel = new JLabel();
-
-        amountLabel.setText("Bars: " + amount.getValue());
+        amountLabel.setText("Bars: " + amountSlider.getValue());
         amountLabel.setBounds(1025, 120, 100, 30);
 
         amountLabel.setFont(new Font("", Font.PLAIN, 20));
@@ -172,8 +193,6 @@ public class SettingsPanel extends JPanel {
 
     private JLabel getSplitter() {
 
-        split = new JLabel();
-
         split.setText("--------------------------------------");
         split.setBounds(1000, 400, 300, 10);
 
@@ -182,8 +201,6 @@ public class SettingsPanel extends JPanel {
     }
 
     private JLabel getHeadline(){
-
-        headline = new JLabel();
 
         headline.setText("Results: ");
         headline.setFont(new Font("", Font.BOLD, 15));
@@ -204,5 +221,4 @@ public class SettingsPanel extends JPanel {
         return counter;
 
     }
-
 }
