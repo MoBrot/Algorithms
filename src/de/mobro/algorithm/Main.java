@@ -10,7 +10,7 @@ public class Main {
         int x = 1250;
         int y = 750;
 
-        new Frame(x, y, new MainManager());
+        new Frame(x, y);
 
     }
 }

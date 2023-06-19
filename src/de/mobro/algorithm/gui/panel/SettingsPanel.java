@@ -2,11 +2,11 @@ package de.mobro.algorithm.gui.panel;
 
 import de.mobro.algorithm.gui.algorithm.Algorithm;
 import de.mobro.algorithm.gui.algorithm.Bubblesort;
-import de.mobro.algorithm.gui.visualitiation.Bar;
 import de.mobro.algorithm.gui.visualitiation.MainManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class SettingsPanel extends JPanel {
 
@@ -14,15 +14,15 @@ public class SettingsPanel extends JPanel {
 
     private final Bubblesort bubbleSort = new Bubblesort();
 
+    private final int x = 35;
 
-    public SettingsPanel(int x, int y, MainManager manager) {
+    public SettingsPanel(int x, int y, int width, int height, MainManager manager) {
 
         this.manager = manager;
 
+        this.setBounds(x , y, width ,height);
         this.setBackground(Color.WHITE);
-
         this.setLayout(null);
-        this.setSize(x, y);
 
         /*
         Add components
@@ -38,12 +38,13 @@ public class SettingsPanel extends JPanel {
         this.add(getSpeedLabel());
         this.add(getAmountLabel());
 
-        this.add(getSplitter());
         this.add(getHeadline());
 
         //----------------------------------
 
         this.setVisible(true);
+
+        manager.reset();
 
     }
 
@@ -58,7 +59,6 @@ public class SettingsPanel extends JPanel {
     private final JLabel amountLabel = new JLabel();
     private final JLabel speedLabel = new JLabel();
 
-    private final JLabel split = new JLabel();
     private final JLabel headline = new JLabel();
 
 
@@ -82,23 +82,26 @@ public class SettingsPanel extends JPanel {
             selectedAlgorithm = (Algorithm) comboBox.getSelectedItem();
         });
 
-        comboBox.setBounds(950, 345, 250, 40);
+        comboBox.setBounds(x, 345, 250, 40);
 
         return comboBox;
 
     }
 
+    private final int sliderWidth = 250;
     private JSlider getSpeedSlider(){
 
         speedSlider.setOrientation(JSlider.HORIZONTAL);
         speedSlider.setValue(250);
 
-        speedSlider.setBounds(950, 250, 250, 40);
+        speedSlider.setBounds(x, 250, sliderWidth, 40);
 
         speedSlider.addChangeListener(e -> {
 
             if(e.getSource() == this.speedSlider)
                 this.speedLabel.setText("Delay: " + this.speedSlider.getValue() + "ms");
+
+            manager.setSpeed(speedSlider.getValue());
 
         });
 
@@ -108,9 +111,9 @@ public class SettingsPanel extends JPanel {
     private JSlider getAmountSlider() {
 
         amountSlider.setOrientation(JSlider.HORIZONTAL);
-        amountSlider.setValue(20);
+        amountSlider.setValue(manager.getAmount());
 
-        amountSlider.setBounds(950, 150, 250, 40);
+        amountSlider.setBounds(x, 150, sliderWidth, 40);
         amountSlider.setToolTipText("Bars: " + amountSlider.getValue());
 
         amountSlider.setPaintTicks(true);
@@ -125,6 +128,8 @@ public class SettingsPanel extends JPanel {
 
             if(e.getSource() == this.amountSlider)
                 amountLabel.setText("Bars: " + this.amountSlider.getValue());
+
+            manager.setAmount(amountSlider.getValue());
 
         });
 
@@ -148,7 +153,7 @@ public class SettingsPanel extends JPanel {
             }
         });
 
-        startButton.setBounds(950, 50, 75, 45);
+        startButton.setBounds(x, 50, 75, 45);
 
         return startButton;
 
@@ -158,12 +163,10 @@ public class SettingsPanel extends JPanel {
 
         resetButton.addActionListener(e -> {
 
-            manager.stopSorting();
-
-
+            manager.reset();
 
         });
-        resetButton.setBounds(1050, 50, 100, 45);
+        resetButton.setBounds(x + 100, 50, 100, 45);
 
         return resetButton;
 
@@ -172,7 +175,7 @@ public class SettingsPanel extends JPanel {
     private JLabel getSpeedLabel(){
 
         speedLabel.setText("Delay: " + speedSlider.getValue() + "ms");
-        speedLabel.setBounds(1025, 220, 1000, 30);
+        speedLabel.setBounds(100, 220, 1000, 30);
 
         speedLabel.setFont(new Font("", Font.PLAIN, 20));
 
@@ -183,20 +186,11 @@ public class SettingsPanel extends JPanel {
     private JLabel getAmountLabel(){
 
         amountLabel.setText("Bars: " + amountSlider.getValue());
-        amountLabel.setBounds(1025, 120, 100, 30);
+        amountLabel.setBounds(100, 120, 100, 30);
 
         amountLabel.setFont(new Font("", Font.PLAIN, 20));
 
         return amountLabel;
-
-    }
-
-    private JLabel getSplitter() {
-
-        split.setText("--------------------------------------");
-        split.setBounds(1000, 400, 300, 10);
-
-        return split;
 
     }
 
@@ -205,7 +199,7 @@ public class SettingsPanel extends JPanel {
         headline.setText("Results: ");
         headline.setFont(new Font("", Font.BOLD, 15));
 
-        headline.setBounds(950, 445, 100, 20);
+        headline.setBounds(x, 445, 100, 20);
 
         return headline;
 

@@ -1,15 +1,26 @@
 package de.mobro.algorithm.gui.visualitiation;
 
 import de.mobro.algorithm.gui.panel.SettingsPanel;
+import de.mobro.algorithm.gui.panel.VisualPanel;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class MainManager {
 
-    public static final ArrayList<Bar> bars = new ArrayList<>();
+    public static ArrayList<Bar> bars = new ArrayList<>();
+    private final Random random = new Random();
+
+    private final VisualPanel visualPanel;
+    public MainManager(VisualPanel visualPanel) {
+        this.visualPanel = visualPanel;
+    }
 
     private int speed = 1;
-    private int amount = 10;
+    private int amount = 200;
 
     public int getSpeed() {
         return speed;
@@ -25,13 +36,28 @@ public class MainManager {
         this.amount = amount;
     }
 
-    public void swap(Bar bar1, Bar bar2) {
+    public VisualPanel getVisualPanel() {
+        return visualPanel;
+    }
 
-        int index1 = bars.indexOf(bar1);
-        int index2 = bars.indexOf(bar2);
+    public Bar[] swap(Bar[] barList, int index1, int index2) {
 
-        bars.set(index1, bar2);
-        bars.set(index2, bar1);
+        Bar temp = barList[index1];
+        barList[index1] = barList[index2];
+        barList[index2] = temp;
+
+        barList[index1].setColor(Color.RED);
+        barList[index2].setColor(Color.RED);
+
+        try {
+
+            Thread.sleep(getSpeed());
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return barList;
     }
 
     public boolean isSorted() {
@@ -51,6 +77,7 @@ public class MainManager {
     }
 
     private Bar[] temp;
+
     private Thread sortingThread;
     public void sort() {
 
@@ -58,19 +85,37 @@ public class MainManager {
 
         sortingThread = new Thread(() -> {
 
-            while (!this.isSorted() || sortingThread != null) {
 
-                temp = SettingsPanel.selectedAlgorithm.iterate(temp);
-
-            }
-
-            sortingThread.stop();
         });
 
         sortingThread.start();
     }
 
     public void stopSorting() {
-        sortingThread.stop();
+        if(sortingThread != null)
+            sortingThread.stop();
+    }
+
+    public void reset() {
+
+        stopSorting();
+
+        // TODO performanter
+
+        final ArrayList<Bar> newBars = new ArrayList<>();
+
+        int barAmount = getAmount();
+        int barWidth = Math.round((float) getVisualPanel().getWidth() / getAmount());
+
+        for (int i = 0; i < barAmount; i++)
+            newBars.add(new Bar(getVisualPanel().defaultBarCOlor, barWidth, getVisualPanel().getHeight(), 20, random, this));
+
+        bars = newBars;
+
+        getVisualPanel().repaint();
+    }
+
+    public Random getRandom() {
+        return random;
     }
 }

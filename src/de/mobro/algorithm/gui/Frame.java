@@ -10,26 +10,25 @@ import java.awt.event.ActionListener;
 
 public class Frame extends JFrame {
 
-    public Frame(int x, int y, MainManager manager) {
+    public Frame(int x, int y) {
 
         this.setSize(x, y);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setLayout(new BorderLayout());
         this.setTitle("Algorithms");
         this.setLocationRelativeTo(null);
+        this.setLayout(null);
 
-        VisualPanel visualPanel = new VisualPanel(manager, x - 350, y);
-        SettingsPanel settingsPanel = new SettingsPanel(350, y, manager);
+        int settingsWidth = 350;
+        int visualPanelWidth = x - settingsWidth;
+
+        VisualPanel visualPanel = new VisualPanel(visualPanelWidth, y);
+        SettingsPanel settingsPanel = new SettingsPanel(visualPanelWidth, 0, settingsWidth, y, new MainManager(visualPanel));
 
         this.add(visualPanel);
         this.add(settingsPanel);
 
-
-
         this.setVisible(true);
-
     }
-
 }
 
