@@ -99,15 +99,17 @@ public class MainManager {
 
         stopSorting();
 
-        final ArrayList<Bar> newBars = new ArrayList<>();
+        final Bar[] newBars = new Bar[getAmount()];
 
         int barAmount = getAmount();
-        int barWidth = Math.round((float) getVisualPanel().getWidth() / getAmount());
+        int barWidth = (getVisualPanel().getWidth() + 1) / getAmount();
+
+        System.out.println(getVisualPanel().getWidth());
 
         for (int i = 0; i < barAmount; i++)
-            newBars.add(new Bar(getVisualPanel().defaultBarCOlor, barWidth, getVisualPanel().getHeight(), 20, random, this));
+            newBars[i] = new Bar(newBars, getVisualPanel().defaultBarCOlor, barWidth, getVisualPanel().getHeight(), 20, random, this);
 
-        getVisualPanel().drawBarArray(newBars.toArray(new Bar[0]));
+        getVisualPanel().drawBarArray(newBars);
 
         SettingsPanel.startButton.setText("Sort");
     }
