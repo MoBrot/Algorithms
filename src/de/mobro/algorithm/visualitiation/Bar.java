@@ -1,4 +1,4 @@
-package de.mobro.algorithm.gui.visualitiation;
+package de.mobro.algorithm.visualitiation;
 
 import java.awt.*;
 import java.util.Random;
@@ -20,6 +20,7 @@ public class Bar {
 
         int difference = defaultHeight - topDistance;
         this.height = random.nextInt(20, difference);
+
     }
 
     public void setColor(Color newColor) {
@@ -30,15 +31,11 @@ public class Bar {
         return height;
     }
 
-    public int getPosition() {
-        return MainManager.bars.indexOf(this);
-    }
-
     public void draw(Graphics2D graphics2D) {
 
         graphics2D.setColor(this.color);
 
-        int positionX = getPosition() * this.width;
+        int positionX = 1 * this.width;
 
         graphics2D.fillRect(positionX, this.defaultHeight - this.height, this.width, this.height);
 

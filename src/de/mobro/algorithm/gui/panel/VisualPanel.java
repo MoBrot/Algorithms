@@ -1,7 +1,6 @@
 package de.mobro.algorithm.gui.panel;
 
-import de.mobro.algorithm.gui.visualitiation.Bar;
-import de.mobro.algorithm.gui.visualitiation.MainManager;
+import de.mobro.algorithm.visualitiation.Bar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,23 +9,22 @@ public class VisualPanel extends JPanel {
 
     public final Color defaultBarCOlor = new Color(3, 102, 250, 255);
 
-    public VisualPanel(int x, int y) {
+    public Bar[] lastDrawnBarArray = null;
+
+    public VisualPanel(int width, int height) {
 
         this.setBackground(Color.BLACK);
 
-        this.setSize(x, y);
+        this.setSize(width, height);
+
         this.setLayout(null);
     }
 
-    @Override
-    public void paint(Graphics g) {
+    public void drawBarArray(Bar[] bars) {
 
-        super.paint(g);
+        for (Bar bar : bars)
+            bar.draw(((Graphics2D) this.getGraphics()));
 
-        Graphics2D graphics2D = (Graphics2D) g;
-
-        for (Bar bar : MainManager.bars)
-            bar.draw(graphics2D);
-        g.dispose();
+        this.lastDrawnBarArray = bars;
     }
 }

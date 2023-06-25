@@ -1,12 +1,11 @@
 package de.mobro.algorithm.gui.panel;
 
-import de.mobro.algorithm.gui.algorithm.Algorithm;
-import de.mobro.algorithm.gui.algorithm.Bubblesort;
-import de.mobro.algorithm.gui.visualitiation.MainManager;
+import de.mobro.algorithm.algorithm.Algorithm;
+import de.mobro.algorithm.algorithm.Bubblesort;
+import de.mobro.algorithm.visualitiation.MainManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 public class SettingsPanel extends JPanel {
 
@@ -16,11 +15,12 @@ public class SettingsPanel extends JPanel {
 
     private final int x = 35;
 
-    public SettingsPanel(int x, int y, int width, int height, MainManager manager) {
+    public SettingsPanel(int width, int height, MainManager manager) {
 
         this.manager = manager;
 
-        this.setBounds(x , y, width ,height);
+        this.setSize(width, height);
+
         this.setBackground(Color.WHITE);
         this.setLayout(null);
 
@@ -44,8 +44,6 @@ public class SettingsPanel extends JPanel {
 
         this.setVisible(true);
 
-        manager.reset();
-
     }
 
     private JComboBox comboBox;
@@ -54,7 +52,7 @@ public class SettingsPanel extends JPanel {
     private final JSlider amountSlider = new JSlider(10, 512);;
 
     private final JButton resetButton = new JButton("Reset bars");;
-    private final JButton startButton = new JButton("Sort");
+    public static final JButton startButton = new JButton("Sort");
 
     private final JLabel amountLabel = new JLabel();
     private final JLabel speedLabel = new JLabel();
@@ -105,6 +103,8 @@ public class SettingsPanel extends JPanel {
 
         });
 
+        manager.setSpeed(speedSlider.getValue());
+
         return speedSlider;
     }
 
@@ -143,6 +143,9 @@ public class SettingsPanel extends JPanel {
 
             // Toggle sort / stop sorting
             if(startButton.getText().equalsIgnoreCase("sort")) {
+
+                if(manager.getVisualPanel().lastDrawnBarArray == null)
+                    manager.reset();
 
                 manager.sort();
                 startButton.setText("Stop");
@@ -202,17 +205,6 @@ public class SettingsPanel extends JPanel {
         headline.setBounds(x, 445, 100, 20);
 
         return headline;
-
-    }
-
-    private JLabel getCounter(){
-
-        counter = new JLabel();
-
-        counter.setText("- Steps");
-        //counter.setBounds();
-
-        return counter;
 
     }
 }

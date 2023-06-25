@@ -1,7 +1,6 @@
 package de.mobro.algorithm;
 
 import de.mobro.algorithm.gui.Frame;
-import de.mobro.algorithm.gui.visualitiation.MainManager;
 
 public class Main {
 

@@ -1,17 +1,14 @@
-package de.mobro.algorithm.gui.visualitiation;
+package de.mobro.algorithm.visualitiation;
 
 import de.mobro.algorithm.gui.panel.SettingsPanel;
 import de.mobro.algorithm.gui.panel.VisualPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class MainManager {
 
-    public static ArrayList<Bar> bars = new ArrayList<>();
     private final Random random = new Random();
 
     private final VisualPanel visualPanel;
@@ -46,28 +43,22 @@ public class MainManager {
         barList[index1] = barList[index2];
         barList[index2] = temp;
 
-        barList[index1].setColor(Color.RED);
-        barList[index2].setColor(Color.RED);
+        barList[index1].setColor(Color.GREEN);
+        barList[index2].setColor(Color.GREEN);
 
-        try {
-
-            Thread.sleep(getSpeed());
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println("Sorted indexA: " + index1 + " indexB: " + index2);
 
         return barList;
     }
 
-    public boolean isSorted() {
+    public boolean isSorted(Bar[] bars) {
 
-        for (int i = 0; i < bars.size(); i++) {
-            if(bars.get(i + 1) != null) {
+        for (int i = 0; i < bars.length; i++) {
 
-                if (bars.get(i).getValue() < bars.get(i + 1).getValue()) {
+            if(bars[i + 1] != null) {
+
+                if (bars[i].getValue() < bars[i + 1].getValue())
                     return false;
-                }
 
             } else
                 return true;
@@ -77,15 +68,23 @@ public class MainManager {
     }
 
     private Bar[] temp;
-
     private Thread sortingThread;
     public void sort() {
 
-        temp = MainManager.bars.toArray(new Bar[0]);
+        temp = getVisualPanel().lastDrawnBarArray.clone();
 
         sortingThread = new Thread(() -> {
 
+            while (true) {
 
+                try {
+
+                    temp = SettingsPanel.selectedAlgorithm.iterate(temp, this);
+
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
 
         sortingThread.start();
@@ -100,8 +99,6 @@ public class MainManager {
 
         stopSorting();
 
-        // TODO performanter
-
         final ArrayList<Bar> newBars = new ArrayList<>();
 
         int barAmount = getAmount();
@@ -110,12 +107,8 @@ public class MainManager {
         for (int i = 0; i < barAmount; i++)
             newBars.add(new Bar(getVisualPanel().defaultBarCOlor, barWidth, getVisualPanel().getHeight(), 20, random, this));
 
-        bars = newBars;
+        getVisualPanel().drawBarArray(newBars.toArray(new Bar[0]));
 
-        getVisualPanel().repaint();
-    }
-
-    public Random getRandom() {
-        return random;
+        SettingsPanel.startButton.setText("Sort");
     }
 }
