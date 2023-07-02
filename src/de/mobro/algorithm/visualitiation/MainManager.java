@@ -39,14 +39,14 @@ public class MainManager {
 
     public Bar[] swap(Bar[] barList, int index1, int index2) {
 
+        System.out.println("Swapping");
+
         Bar temp = barList[index1];
         barList[index1] = barList[index2];
         barList[index2] = temp;
 
         barList[index1].setColor(Color.GREEN);
         barList[index2].setColor(Color.GREEN);
-
-        System.out.println("Sorted indexA: " + index1 + " indexB: " + index2);
 
         return barList;
     }
@@ -102,15 +102,11 @@ public class MainManager {
         final Bar[] newBars = new Bar[getAmount()];
 
         int barAmount = getAmount();
-        int barWidth = (getVisualPanel().getWidth() + 1) / getAmount();
-
-        System.out.println(getVisualPanel().getWidth());
+        int barWidth = Math.round((float) getVisualPanel().getWidth() / getAmount());
 
         for (int i = 0; i < barAmount; i++)
             newBars[i] = new Bar(newBars, getVisualPanel().defaultBarCOlor, barWidth, getVisualPanel().getHeight(), 20, random, this);
 
         getVisualPanel().drawBarArray(newBars);
-
-        SettingsPanel.startButton.setText("Sort");
     }
 }

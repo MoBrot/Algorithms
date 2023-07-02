@@ -20,19 +20,26 @@ public class VisualPanel extends JPanel {
         this.setLayout(null);
     }
 
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+
+        if(lastDrawnBarArray == null)
+            return;
+
+        for (Bar bar : lastDrawnBarArray)
+            bar.draw((Graphics2D) g);
+
+        g.dispose();
+
+    }
+
+    // TODO - Fix this Method
     public void drawBarArray(Bar[] bars) {
-
-        Graphics2D graphics2D = ((Graphics2D) this.getGraphics());
-
-        // Set the the pane screen to the backround color to overpaint the Drawn bar array
-        graphics2D.setColor(this.getBackground());
-        graphics2D.drawRect(0, 0, this.getWidth(), this.getHeight());
-
-        for (Bar bar : bars)
-            bar.draw(graphics2D);
 
         this.lastDrawnBarArray = bars;
 
-        graphics2D.dispose();
+        repaint();
+
     }
 }

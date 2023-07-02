@@ -3,18 +3,15 @@ package de.mobro.algorithm.algorithm;
 import de.mobro.algorithm.visualitiation.Bar;
 import de.mobro.algorithm.visualitiation.MainManager;
 
-import java.awt.*;
-
 public class Bubblesort implements Algorithm {
 
     @Override
     public Bar[] iterate(Bar[] array, MainManager manager) throws InterruptedException {
 
-        System.out.println(array.length);
+        for (int i = 0; i < array.length - 1; i++) {
 
-        for (int i = 0; i < array.length; i++) {
-
-            array[i].setColor(Color.RED);
+            if(array[i].getValue() > array[i + 1].getValue())
+                array = manager.swap(array, i, i + 1);
 
             Thread.sleep(manager.getSpeed());
 

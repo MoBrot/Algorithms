@@ -44,6 +44,7 @@ public class SettingsPanel extends JPanel {
 
         this.setVisible(true);
 
+        manager.reset();
     }
 
     private JComboBox comboBox;
