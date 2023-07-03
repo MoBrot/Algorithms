@@ -23,14 +23,12 @@ public class MainManager {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-
     public int getAmount() {
         return amount;
     }
     public void setAmount(int amount) {
         this.amount = amount;
     }
-
     public VisualPanel getVisualPanel() {
         return visualPanel;
     }
@@ -43,8 +41,6 @@ public class MainManager {
         // For drawing
         atIndex1.setPosition(index2);
         atIndex2.setPosition(index1);
-
-
 
         // Swap in array
         barList[index2] = atIndex1;
@@ -74,7 +70,11 @@ public class MainManager {
 
             while (true) {
 
-                temp = SettingsPanel.selectedAlgorithm.iterate(temp, this);
+                try {
+                    temp = SettingsPanel.selectedAlgorithm.iterate(temp, this);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 
                 if(isSorted(temp))
                     return;
@@ -102,7 +102,7 @@ public class MainManager {
         int barWidth = (int) ((float) getVisualPanel().getWidth() / getAmount());
 
         for (int i = 0; i < barAmount; i++)
-            newBars[i] = new Bar(i, getVisualPanel().defaultBarCOlor, barWidth, getVisualPanel().getHeight(), 20, random, this);
+            newBars[i] = new Bar(i, getVisualPanel().defaultBarColor, barWidth, getVisualPanel().getHeight(), 20, random, this);
 
         getVisualPanel().drawBarArray(newBars);
     }
@@ -116,5 +116,19 @@ public class MainManager {
         for (Bar bar : iterateArray)
             iterateInterface.iteration(bar);
 
+    }
+
+    public void visualizestep(Bar[] array, Bar bar1, Bar bar2) throws InterruptedException {
+
+        // Clarify Color of selected bars
+        this.for2Bars(bar1, bar2, Bar::clarify);
+
+        // Draw current array
+        this.getVisualPanel().drawBarArray(array);
+
+        Thread.sleep(this.getSpeed());
+
+        // Normalize Color of selected
+        this.for2Bars(bar1, bar2, Bar::normalize);
     }
 }

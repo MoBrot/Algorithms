@@ -2,6 +2,7 @@ package de.mobro.algorithm.gui.panel;
 
 import de.mobro.algorithm.algorithm.Algorithm;
 import de.mobro.algorithm.algorithm.Bubblesort;
+import de.mobro.algorithm.algorithm.CocktailShaker;
 import de.mobro.algorithm.visualitiation.MainManager;
 
 import javax.swing.*;
@@ -10,8 +11,6 @@ import java.awt.*;
 public class SettingsPanel extends JPanel {
 
     private final MainManager manager;
-
-    private final Bubblesort bubbleSort = new Bubblesort();
 
     private final int x = 35;
 
@@ -69,7 +68,8 @@ public class SettingsPanel extends JPanel {
 
         Algorithm[] algorithms = {
 
-                bubbleSort
+                new Bubblesort(),
+                new CocktailShaker()
 
         };
 

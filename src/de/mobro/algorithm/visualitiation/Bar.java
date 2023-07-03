@@ -39,7 +39,7 @@ public class Bar {
     }
 
     public void normalize() {
-        setColor(manager.getVisualPanel().defaultBarCOlor);
+        setColor(manager.getVisualPanel().defaultBarColor);
     }
 
     public void setPosition(int position) {

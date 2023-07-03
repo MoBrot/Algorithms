@@ -5,6 +5,6 @@ import de.mobro.algorithm.visualitiation.MainManager;
 
 public interface Algorithm {
 
-    Bar[] iterate(Bar[] array, MainManager manager);
+    Bar[] iterate(Bar[] array, MainManager manager) throws InterruptedException;
 
 }

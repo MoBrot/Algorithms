@@ -4,11 +4,10 @@ import de.mobro.algorithm.visualitiation.Bar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class VisualPanel extends JPanel {
 
-    public final Color defaultBarCOlor = new Color(3, 102, 250, 255);
+    public final Color defaultBarColor = new Color(3, 102, 250, 255);
     public final Color highlitedBarColor = Color.RED;
 
     public Bar[] lastDrawnBarArray = null;
@@ -26,14 +25,6 @@ public class VisualPanel extends JPanel {
     public void paint(Graphics g) {
 
         super.paint(g);
-
-        System.out.println();
-        System.out.println();
-
-        System.out.println(Arrays.toString(lastDrawnBarArray));
-
-        System.out.println();
-        System.out.println();
 
         if(lastDrawnBarArray == null)
             return;
