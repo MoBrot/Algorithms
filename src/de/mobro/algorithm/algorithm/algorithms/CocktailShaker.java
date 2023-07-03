@@ -1,9 +1,10 @@
-package de.mobro.algorithm.algorithm;
+package de.mobro.algorithm.algorithm.algorithms;
 
+import de.mobro.algorithm.algorithm.Algorithm;
 import de.mobro.algorithm.visualitiation.Bar;
 import de.mobro.algorithm.visualitiation.MainManager;
 
-public class CocktailShaker implements Algorithm {
+public class CocktailShaker extends Algorithm {
 
 
     @Override
@@ -37,11 +38,5 @@ public class CocktailShaker implements Algorithm {
         }
 
         return array;
-    }
-
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
     }
 }

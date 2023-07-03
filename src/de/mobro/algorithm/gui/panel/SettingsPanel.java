@@ -1,8 +1,6 @@
 package de.mobro.algorithm.gui.panel;
 
 import de.mobro.algorithm.algorithm.Algorithm;
-import de.mobro.algorithm.algorithm.Bubblesort;
-import de.mobro.algorithm.algorithm.CocktailShaker;
 import de.mobro.algorithm.visualitiation.MainManager;
 
 import javax.swing.*;
@@ -59,23 +57,13 @@ public class SettingsPanel extends JPanel {
 
     private final JLabel headline = new JLabel();
 
-
-    public static JLabel counter;
-
     public static Algorithm selectedAlgorithm;
 
     private JComboBox getComboBox() {
 
-        Algorithm[] algorithms = {
+        selectedAlgorithm = this.manager.getAlgorithms()[0];
 
-                new Bubblesort(),
-                new CocktailShaker()
-
-        };
-
-        selectedAlgorithm = algorithms[0];
-
-        comboBox = new JComboBox(algorithms);
+        comboBox = new JComboBox(this.manager.getAlgorithms());
 
         comboBox.addActionListener(e -> {
             selectedAlgorithm = (Algorithm) comboBox.getSelectedItem();

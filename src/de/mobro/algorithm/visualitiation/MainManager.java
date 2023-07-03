@@ -1,5 +1,7 @@
 package de.mobro.algorithm.visualitiation;
 
+import de.mobro.algorithm.algorithm.*;
+import de.mobro.algorithm.algorithm.algorithms.*;
 import de.mobro.algorithm.gui.panel.SettingsPanel;
 import de.mobro.algorithm.gui.panel.VisualPanel;
 
@@ -31,6 +33,20 @@ public class MainManager {
     }
     public VisualPanel getVisualPanel() {
         return visualPanel;
+    }
+
+    private final Algorithm[] algorithms = {
+
+            new Bubblesort(),
+            new CocktailShaker(),
+            new InsertionSort(),
+            new QuickSort(),
+            new SelectionSort(),
+
+    };
+
+    public Algorithm[] getAlgorithms() {
+        return algorithms;
     }
 
     public Bar[] swap(Bar[] barList, int index1, int index2) {
@@ -71,7 +87,9 @@ public class MainManager {
             while (true) {
 
                 try {
+
                     temp = SettingsPanel.selectedAlgorithm.iterate(temp, this);
+
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

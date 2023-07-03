@@ -1,9 +1,10 @@
-package de.mobro.algorithm.algorithm;
+package de.mobro.algorithm.algorithm.algorithms;
 
+import de.mobro.algorithm.algorithm.Algorithm;
 import de.mobro.algorithm.visualitiation.Bar;
 import de.mobro.algorithm.visualitiation.MainManager;
 
-public class Bubblesort implements Algorithm {
+public class Bubblesort extends Algorithm {
 
     @Override
     public Bar[] iterate(Bar[] array, MainManager manager) throws InterruptedException {
@@ -22,10 +23,5 @@ public class Bubblesort implements Algorithm {
         }
 
         return array;
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
     }
 }
