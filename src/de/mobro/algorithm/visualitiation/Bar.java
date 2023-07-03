@@ -8,22 +8,22 @@ public class Bar {
     private Color color;
     private final int width;
     private final int height;
-    private final MainManager manager;
     private final int defaultHeight;
+    private final MainManager manager;
+    private int position;
 
-    private final Bar[] parent;
+    public Bar(int pos, Color color, int width, int defaultHeight, int topDistance, Random random, MainManager manager) {
 
-    public Bar(Bar[] parent, Color color, int width, int defaultHeight, int topDistance, Random random, MainManager manager) {
+        this.position = pos;
 
         this.color = color;
         this.width = width;
-        this.manager = manager;
         this.defaultHeight = defaultHeight;
 
         int difference = defaultHeight - topDistance;
         this.height = random.nextInt(20, difference);
 
-        this.parent = parent;
+        this.manager = manager;
     }
 
     public void setColor(Color newColor) {
@@ -34,22 +34,34 @@ public class Bar {
         return height;
     }
 
+    public void clarify() {
+        setColor(manager.getVisualPanel().highlitedBarColor);
+    }
+
+    public void normalize() {
+        setColor(manager.getVisualPanel().defaultBarCOlor);
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
     public void draw(Graphics2D graphics2D) {
 
         graphics2D.setColor(this.color);
 
-        int arrayPosition = -1;
-        for (int i = 0; i < parent.length - 1; i++) {
-
-            if (parent[i] == this) {
-                arrayPosition = i;
-                break;
-            }
-        }
-
-        int positionX = arrayPosition * this.width;
+        int positionX = this.position * this.width;
 
         graphics2D.fillRect(positionX, this.defaultHeight - this.height, this.width, this.height);
 
+    }
+
+    @Override
+    public String toString() {
+        return "Value: " + getValue();
     }
 }

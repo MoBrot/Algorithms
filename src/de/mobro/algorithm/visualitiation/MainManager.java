@@ -3,8 +3,6 @@ package de.mobro.algorithm.visualitiation;
 import de.mobro.algorithm.gui.panel.SettingsPanel;
 import de.mobro.algorithm.gui.panel.VisualPanel;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MainManager {
@@ -39,32 +37,31 @@ public class MainManager {
 
     public Bar[] swap(Bar[] barList, int index1, int index2) {
 
-        System.out.println("Swapping");
+        Bar atIndex1 = barList[index1];
+        Bar atIndex2 = barList[index2];
 
-        Bar temp = barList[index1];
-        barList[index1] = barList[index2];
-        barList[index2] = temp;
+        // For drawing
+        atIndex1.setPosition(index2);
+        atIndex2.setPosition(index1);
 
-        barList[index1].setColor(Color.GREEN);
-        barList[index2].setColor(Color.GREEN);
+
+
+        // Swap in array
+        barList[index2] = atIndex1;
+        barList[index1] = atIndex2;
 
         return barList;
     }
 
     public boolean isSorted(Bar[] bars) {
 
-        for (int i = 0; i < bars.length; i++) {
+        for (int i = 0; i < bars.length - 1; i++) {
 
-            if(bars[i + 1] != null) {
-
-                if (bars[i].getValue() < bars[i + 1].getValue())
-                    return false;
-
-            } else
-                return true;
+            if(bars[i].getValue() > bars[i + 1].getValue())
+                return false;
         }
 
-        return false;
+        return true;
     }
 
     private Bar[] temp;
@@ -77,13 +74,10 @@ public class MainManager {
 
             while (true) {
 
-                try {
+                temp = SettingsPanel.selectedAlgorithm.iterate(temp, this);
 
-                    temp = SettingsPanel.selectedAlgorithm.iterate(temp, this);
-
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                if(isSorted(temp))
+                    return;
             }
         });
 
@@ -91,8 +85,11 @@ public class MainManager {
     }
 
     public void stopSorting() {
+
         if(sortingThread != null)
             sortingThread.stop();
+
+        SettingsPanel.startButton.setText("Sort");
     }
 
     public void reset() {
@@ -102,11 +99,22 @@ public class MainManager {
         final Bar[] newBars = new Bar[getAmount()];
 
         int barAmount = getAmount();
-        int barWidth = Math.round((float) getVisualPanel().getWidth() / getAmount());
+        int barWidth = (int) ((float) getVisualPanel().getWidth() / getAmount());
 
         for (int i = 0; i < barAmount; i++)
-            newBars[i] = new Bar(newBars, getVisualPanel().defaultBarCOlor, barWidth, getVisualPanel().getHeight(), 20, random, this);
+            newBars[i] = new Bar(i, getVisualPanel().defaultBarCOlor, barWidth, getVisualPanel().getHeight(), 20, random, this);
 
         getVisualPanel().drawBarArray(newBars);
+    }
+
+    private final Bar[] iterateArray = new Bar[2];
+    public void for2Bars(Bar bar1, Bar bar2, IterateInterface iterateInterface) {
+
+        iterateArray[0] = bar1;
+        iterateArray[1] = bar2;
+
+        for (Bar bar : iterateArray)
+            iterateInterface.iteration(bar);
+
     }
 }

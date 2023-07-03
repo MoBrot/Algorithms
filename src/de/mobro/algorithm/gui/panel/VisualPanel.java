@@ -4,10 +4,12 @@ import de.mobro.algorithm.visualitiation.Bar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class VisualPanel extends JPanel {
 
     public final Color defaultBarCOlor = new Color(3, 102, 250, 255);
+    public final Color highlitedBarColor = Color.RED;
 
     public Bar[] lastDrawnBarArray = null;
 
@@ -22,7 +24,16 @@ public class VisualPanel extends JPanel {
 
     @Override
     public void paint(Graphics g) {
+
         super.paint(g);
+
+        System.out.println();
+        System.out.println();
+
+        System.out.println(Arrays.toString(lastDrawnBarArray));
+
+        System.out.println();
+        System.out.println();
 
         if(lastDrawnBarArray == null)
             return;
@@ -31,15 +42,12 @@ public class VisualPanel extends JPanel {
             bar.draw((Graphics2D) g);
 
         g.dispose();
-
     }
 
-    // TODO - Fix this Method
     public void drawBarArray(Bar[] bars) {
 
         this.lastDrawnBarArray = bars;
 
-        repaint();
-
+        this.repaint();
     }
 }
